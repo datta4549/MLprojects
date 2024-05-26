@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 import dill
 import pickle
-from sklearn.metrics import r2_score
-from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score, classification_report,ConfusionMatrixDisplay,precision_score, recall_score, f1_score, roc_auc_score,roc_curve
+from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
 
 from src.exception import CustomException
 
@@ -42,10 +42,10 @@ def evaluate_models(X_train, y_train,X_test,y_test,models,param):
 
             y_test_pred = model.predict(X_test)
 
-            train_model_score = r2_score(y_train, y_train_pred)
-
-            test_model_score = r2_score(y_test, y_test_pred)
-
+            #train_model_score = r2_score(y_train, y_train_pred)
+            train_model_score = f1_score(y_train,y_train_pred, average='weighted')
+            #test_model_score = r2_score(y_test, y_test_pred)
+            test_model_score = f1_score(y_test,y_test_pred, average='weighted')
             report[list(models.keys())[i]] = test_model_score
 
         return report
